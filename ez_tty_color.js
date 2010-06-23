@@ -1,4 +1,4 @@
-# some ansi tty color - http://en.wikipedia.org/wiki/ANSI_escape_code
+// some ansi tty color - http://en.wikipedia.org/wiki/ANSI_escape_code
 
 exports.all_off		= "\e[0m";
 exports.bold		= "\e[1m";

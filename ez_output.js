@@ -49,6 +49,10 @@ var hexa_dump_str	= function(data){
 	return output;
 }
 
+/**
+ * output an hexa_dump in stdout
+ * - inpired from hd(1) output
+*/
 var hexa_dump	= function(data){
 	sys.puts(hexa_dump_str(data));
 }
