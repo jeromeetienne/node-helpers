@@ -2,6 +2,9 @@ var Buffer	= require('buffer').Buffer
 var fs		= require('fs');
 var sys		= require('sys');
 
+/**
+ * Read file in 
+*/
 var ez_fileread	= function(path, range_beg, range_len, completed_cb){
 	// open the file
 	fs.open(path, "r", 0644, function(err, fd){
