@@ -1,3 +1,7 @@
+/**
+ * strutils.js: standlone library which contains helpers for strings
+*/
+
 
 /**
  * Convert a string to a number (compatible with k/m/g unit)
