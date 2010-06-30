@@ -66,7 +66,7 @@ var http_resp_headers	= function(url_str, completed_cb){
 		'host'	: url.hostname
 	});
 	request.addListener('response', function(response) {
-		sys.puts('HEADERS: ' + JSON.stringify(response.headers));
+		//sys.puts('HEADERS: ' + JSON.stringify(response.headers));
 		// notify the caller
 		completed_cb(null, response.headers);
 	});
