@@ -24,7 +24,7 @@ var http_get	= function(url_str, range_beg, range_len, completed_cb){
 	// create the http client
 	var client	= http.createClient((url.port||80), url.hostname);
 	// bind error cases at the socket level
-	client.on("error"	, function(e){ completed_cb("error", null) });
+	client.on("error"	, function(e){ completed_cb("error due to "+e.message, null) });
 	client.on("timeout"	, function(e){ completed_cb("timeout", null) });	
 	// create the request
 	var request	= client.request('GET', pqh_str,  {
