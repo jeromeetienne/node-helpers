@@ -23,18 +23,27 @@ var http_get	= function(url_str, range_beg, range_len, completed_cb){
 	if( url.hash  !== undefined )	pqh_str	+= url.hash;
 	// create the http client
 	var client	= http.createClient((url.port||80), url.hostname);
+	// bind error cases at the socket level
+	client.on("error"	, function(e){ completed_cb("error", null) });
+	client.on("timeout"	, function(e){ completed_cb("timeout", null) });	
+	// create the request
 	var request	= client.request('GET', pqh_str,  {
 		'host'	: url.hostname,
 		'Range'	: "bytes="+range_beg+"-"+range_end
 	});
 	// init the data to run
 	var data	= "";
-	request.addListener('response', function(response) {
+	request.on('response', function(response) {
 		response.setEncoding('binary');
-		response.addListener('data', function(chunk){
+		// handle error at http level 
+		if( response.statusCode != 206 ){
+			completed_cb("http error ("+response.statusCode+")", null)
+			return;
+		}
+		response.on('data', function(chunk){
 			data	+= chunk;
 		});
-		response.addListener('end', function(){
+		response.on('end', function(){
 			// notify caller
 			completed_cb(null, data);
 		});
@@ -62,13 +71,26 @@ var http_resp_headers	= function(url_str, completed_cb){
 	if( url.hash  !== undefined )	pqh_str	+= url.hash;
 	// create the http client
 	var client	= http.createClient((url.port||80), url.hostname);
+	// bind error cases at the socket level
+	client.on("error"	, function(e){ completed_cb("error", null) });
+	client.on("timeout"	, function(e){ completed_cb("timeout", null) });	
+	// create the request
 	var request	= client.request('GET', pqh_str,  {
 		'host'	: url.hostname
 	});
-	request.addListener('response', function(response) {
-		//sys.puts('HEADERS: ' + JSON.stringify(response.headers));
-		// notify the caller
+	request.on('response', function(response) {
+		// handle error at http level 
+		if( response.statusCode != 200 ){
+			completed_cb("http error ("+response.statusCode+")", null)
+			return;
+		}
+		// log to debug
+		// console.log('HEADERS: ' + JSON.stringify(response.headers));
+		// notify the called
 		completed_cb(null, response.headers);
+		// pause response from emitting events
+		// - important not to download data
+		response.pause();
 	});
 	request.end();	
 }
