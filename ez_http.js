@@ -75,7 +75,7 @@ var http_resp_headers	= function(url_str, completed_cb){
 	client.on("error"	, function(e){ completed_cb("error", null) });
 	client.on("timeout"	, function(e){ completed_cb("timeout", null) });	
 	// create the request
-	var request	= client.request('GET', pqh_str,  {
+	var request	= client.request('HEAD', pqh_str,  {
 		'host'	: url.hostname
 	});
 	request.on('response', function(response) {
